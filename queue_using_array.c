@@ -11,6 +11,7 @@ void enqueue()
     if(rear==4)
     {
         printf("Queue Overflow !!!\n");
+        return;
     }
     if(front==-1&&rear==-1)
     {

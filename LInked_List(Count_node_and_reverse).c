@@ -1,85 +1,110 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
 
-// Define the structure for a linked list node
-struct Node {
+struct node
+{
     int data;
-    struct Node* next;
+    struct node *next;
 };
 
-// Function to create a new node with given data
-struct Node* createNode(int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
+struct node * start = NULL;
+
+void insert_beg();
+void count();
+void reverse();
+
+int main()
+{
+    int choice;
+    do
+    {
+        printf("1.Insert Beg\n2.count\n3.reverse\nEnter Choice: ");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+            insert_beg();
+            display();
+            break;
+            case 2:
+            count();
+            display();
+            break;
+            case 3:
+            reverse();
+            display();
+            break;
+            case 4:
+            display();
+            break;
+
+        }
+    }
+    while (choice!=5);
 }
 
-// Function to insert a new node at the end of the list
-void insertEnd(struct Node** head, int data) {
-    struct Node* newNode = createNode(data);
-    if (*head == NULL) {
-        *head = newNode;
-        return;
+void insert_beg()
+{
+    struct node *new_node;
+    new_node = (struct node *)malloc(sizeof(struct node));
+    printf("Enter value: ");
+    scanf("%d",&new_node->data);
+
+    if (start==NULL)
+    {
+        new_node->next=NULL;
+        start=new_node;
     }
-    struct Node* temp = *head;
-    while (temp->next != NULL) {
-        temp = temp->next;
+    else 
+    {
+        new_node->next=start;
+        start=new_node;
     }
-    temp->next = newNode;
 }
 
-// Function to count the number of nodes in the list
-int count_no_of_nodes(struct Node* head) {
-    int count = 0;
-    struct Node* temp = head;
-    while (temp != NULL) {
-        count++;
-        temp = temp->next;
+void count()
+{
+    int i=0;
+    struct node *temp;
+    temp=start;
+    while(temp!=NULL)
+    {
+        temp=temp->next;
+        i++;
     }
-    return count;
+    printf("\n The count is %d \n",i);
 }
 
-// Function to display the linked list in reverse order using recursion
-void display_reverse(struct Node* head) {
-    if (head == NULL) {
-        return;
+void reverse()
+{
+    struct node *ptemp,*temp;
+    int item=0;
+    temp=start;
+    if(start->next!=NULL)
+    {
+        while(temp->next!=NULL)
+        {
+            ptemp=temp;
+            temp=temp->next;
+            item=temp->data;
+            temp->data=ptemp->data;
+            ptemp->data=item;
+        }
+        temp=start;
+        item=temp->data;
+        temp->data=ptemp->data;
+        ptemp->data=item;
     }
-    display_reverse(head->next);  // Recursive call
-    printf("%d ", head->data);    // Print after recursion returns
 }
 
-// Function to display the linked list
-void display(struct Node* head) {
-    struct Node* temp = head;
-    printf("Linked List: ");
-    while (temp != NULL) {
-        printf("%d ", temp->data);
-        temp = temp->next;
+
+void display()
+{
+    struct node*temp;
+    temp=start;
+    while(temp!=NULL)
+    {
+        printf("\n%d\n",temp->data);
+        temp=temp->next;
     }
-    printf("\n");
-}
-
-// Main function
-int main() {
-    struct Node* head = NULL;
-
-    // Inserting elements in the linked list
-    insertEnd(&head, 10);
-    insertEnd(&head, 20);
-    insertEnd(&head, 30);
-    insertEnd(&head, 40);
-
-    // Display the list
-    display(head);
-
-    // Count the number of nodes
-    printf("Number of nodes: %d\n", count_no_of_nodes(head));
-
-    // Display the list in reverse
-    printf("Reversed List: ");
-    display_reverse(head);
-    printf("\n");
-
-    return 0;
 }
